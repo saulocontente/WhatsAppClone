@@ -1,9 +1,10 @@
-package com.aulaudemy.whatsappcloneandroid;
+package com.aulaudemy.whatsappcloneandroid.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.aulaudemy.whatsappcloneandroid.R;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

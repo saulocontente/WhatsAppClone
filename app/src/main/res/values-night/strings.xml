@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WhatsAppClone</string>
+    <string name="edit_name">Type your name</string>
+    <string name="ddi_hint">+55</string>
+    <string name="ddd_hint">11</string>
+    <string name="fone_hint">970926669</string>
+    <string name="register_button">Register</string>
+</resources>

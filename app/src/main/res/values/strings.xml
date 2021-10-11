@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">WhatsAppClone</string>
+    <string name="edit_name">Type your name</string>
+    <string name="ddi_hint">+55</string>
+    <string name="fone_hint">(11)97092-6669</string>
+    <string name="register_button">Register</string>
+    <string name="validate_button">Validate</string>
+    <string name="validation_title">Validation</string>
+    <string name="validation_text">You\'ve received a SMS to validate your number, type the validation code bellow:</string>
+    <string name="validation_hint">Type your code</string>
 </resources>
