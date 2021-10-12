@@ -2,14 +2,16 @@ package com.aulaudemy.whatsappcloneandroid.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.SharedPreferences;
+import android.Manifest;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.aulaudemy.whatsappcloneandroid.R;
+import com.aulaudemy.whatsappcloneandroid.helper.Permissions;
 import com.aulaudemy.whatsappcloneandroid.helper.Preferences;
 import com.aulaudemy.whatsappcloneandroid.model.User;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
@@ -27,12 +29,16 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editDDI;
     private EditText editPhone;
     private Button registerButton;
+    private String[] neededPermissions = new String[] {
+            Manifest.permission.SEND_SMS
+    };
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Permissions.validatePermissions(this, neededPermissions, 1);
 
         editName    =   findViewById(R.id.editTextName);
         editName.setText("Saulo Gonçalves Contente");
@@ -56,19 +62,26 @@ public class LoginActivity extends AppCompatActivity {
                 registerUser(user);
                 user.setToken( makeToken() );
                 Log.i("TOKEN", "T: "+user.getToken() );
+                String sendMessage = "WhatsApp validation code: ";
 
                 //Salvar dados para validação
                 Preferences preferences = new Preferences(LoginActivity.this);
                 preferences.saveUsersPreferences(user);
 
+                //Enviar SMS
+                boolean smsSent = sendSMS( "5554", sendMessage + user.getToken() );
+
+                //Exibir os dados salvos nas preferencias
                 HashMap<String, String> userPreferences = preferences.getUserData();
                 Log.i("TOKEN","Name: "+userPreferences.get("name")+" Phone: "+userPreferences.get("phone")+" Token: "+userPreferences.get("token"));
+
+
             }
         });
 
     }
 
-    public void registerUser(User user) {
+    private void registerUser(User user) {
 
         String completePhone = editDDI.getText().toString()+editPhone.getText().toString();
         String unformattedPhone = completePhone.replace("+", "");
@@ -82,9 +95,20 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public String makeToken() {
+    private String makeToken() {
         Random random = new Random();
         int randomNumber = random.nextInt(8999) + 1000;
         return  String.valueOf(randomNumber);
+    }
+
+    private boolean sendSMS( String phone, String message ) {
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage("+" + phone, null, message, null, null );
+            return true;
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return false;
+        }
     }
 }
